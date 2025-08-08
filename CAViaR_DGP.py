@@ -27,7 +27,6 @@ def I_p(x):
 # t: tempo a cui ci si trova
 # v_z: valore del VaR
 # Z_t: vettore con tutti i valori del pre-campioni (imposti a 0) e del campione generato per il BurbIn e per il PostBurnIn
-# HT: Heavy Tails, se una distribuzione ha code pesanti, come la t-Stud(df=5) allora è meglio imporre un controllo sulla TotalSum
 
 
 def CSASAV(t, v_z, Z_t):

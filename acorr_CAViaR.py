@@ -28,7 +28,6 @@ def I_p(x):
 # t: tempo a cui ci si trova
 # v_z: valore del VaR
 # Z_t: vettore con tutti i valori del pre-campioni (imposti a 0) e del campione generato per il BurbIn e per il PostBurnIn
-# HT: Heavy Tails, se una distribuzione ha code pesanti, come la t-Stud(df=5) allora è meglio imporre un controllo sulla TotalSum
 
 def CSASAV(t, v_z, Z_t):
     b0, b1, b2, b3 = 0.05*abs(v_z), 0.8, 0.15*abs(v_z), 0.9
@@ -222,7 +221,7 @@ def plot_model(ax, i, pdf, specif, alpha=0.025, seed=0, ylim=(-0.1, 1.1), max_la
     ax.plot(x, abs(Y_acorr[-max_lag:]), linewidth=1, color='#ED3500', label="Y_t")
     ax.plot(x, abs(VE_acorr[-max_lag:]), linewidth=1, color='#5356FF', label="V_t, E_t")
     ax.set_ylim(*ylim)
-    ax.set_title(f"({i+1}) {title}", fontsize=8, fontweight='bold')
+    ax.set_title(f"({i+1}) {title}", fontsize=9, fontweight='bold')
     ax.tick_params(labelsize=6)
     # ax.set_yscale("log")
     ax.grid(True)

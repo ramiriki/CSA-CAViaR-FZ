@@ -22,7 +22,7 @@ B = 40 # nr di replicazioni della simulazione per poter poi confrontare i risult
 ALPHA = 0.025
 NR_CANDID = 50
 NR_PASS_CHECK = 5
-DELTA = 0.005
+DELTA = 0.075
 
 
 # definizioni indicatrici negativa e positiva
@@ -560,54 +560,54 @@ def ParamEstimation(nr_candid, nr_pass_check, specif, pdf, Y_t, alpha, seed, bou
 def tab_CSASAV(ThetaTrue, BThetaQN):
     param = ["b0", "b1", "b2", "b3", "gamma"]
     meanBThetaQN = np.mean(BThetaQN, axis=0)
-    sdBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
+    seBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
     rmseBThetaQN = np.sqrt(((BThetaQN - ThetaTrue) ** 2).mean(axis=0))
-    return param, meanBThetaQN, sdBThetaQN, rmseBThetaQN
+    return param, meanBThetaQN, seBThetaQN, rmseBThetaQN
 
 
 
 def tab_CSAAS(ThetaTrue, BThetaQN):
     param = ["b0", "b1", "b2m", "b2p", "b3", "gamma"]
     meanBThetaQN = np.mean(BThetaQN, axis=0)
-    sdBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
+    seBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
     rmseBThetaQN = np.sqrt(((BThetaQN - ThetaTrue) ** 2).mean(axis=0))
-    return param, meanBThetaQN, sdBThetaQN, rmseBThetaQN
+    return param, meanBThetaQN, seBThetaQN, rmseBThetaQN
 
 
 
 def tab_CSAIG(ThetaTrue, BThetaQN):
     param = ["b0", "b1", "b2", "b3", "gamma"]
     meanBThetaQN = np.mean(BThetaQN, axis=0)
-    sdBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
+    seBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
     rmseBThetaQN = np.sqrt(((BThetaQN - ThetaTrue) ** 2).mean(axis=0))
-    return param, meanBThetaQN, sdBThetaQN, rmseBThetaQN
+    return param, meanBThetaQN, seBThetaQN, rmseBThetaQN
 
 
 
 def tab_SAV(ThetaTrue, BThetaQN):
     param = ["b0", "b1", "b2", "gamma"]
     meanBThetaQN = np.mean(BThetaQN, axis=0)
-    sdBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
+    seBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
     rmseBThetaQN = np.sqrt(((BThetaQN - ThetaTrue) ** 2).mean(axis=0))
-    return param, meanBThetaQN, sdBThetaQN, rmseBThetaQN
+    return param, meanBThetaQN, seBThetaQN, rmseBThetaQN
 
 
 
 def tab_AS(ThetaTrue, BThetaQN):
     param = ["b0", "b1", "b2m", "b2p", "gamma"]
     meanBThetaQN = np.mean(BThetaQN, axis=0)
-    sdBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
+    seBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
     rmseBThetaQN = np.sqrt(((BThetaQN - ThetaTrue) ** 2).mean(axis=0))
-    return param, meanBThetaQN, sdBThetaQN, rmseBThetaQN
+    return param, meanBThetaQN, seBThetaQN, rmseBThetaQN
 
 
 
 def tab_IG(ThetaTrue, BThetaQN):
     param = ["b0", "b1", "b2", "gamma"]
     meanBThetaQN = np.mean(BThetaQN, axis=0)
-    sdBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
+    seBThetaQN = np.std(BThetaQN, ddof=1, axis=0)
     rmseBThetaQN = np.sqrt(((BThetaQN - ThetaTrue) ** 2).mean(axis=0))
-    return param, meanBThetaQN, sdBThetaQN, rmseBThetaQN
+    return param, meanBThetaQN, seBThetaQN, rmseBThetaQN
 
 
 
@@ -630,7 +630,7 @@ def ChooseSpecificTab(specif, ThetaTrue, BThetaQN):
 
 
 
-def BuildDataFrame(pdf, specif, ThetaTrue, meanBThetaQN, sdBThetaQN, rmseBThetaQN, param):
+def BuildDataFrame(pdf, specif, ThetaTrue, meanBThetaQN, seBThetaQN, rmseBThetaQN, param):
     df = pd.DataFrame(
         {
             "Specific": specif,
@@ -638,7 +638,7 @@ def BuildDataFrame(pdf, specif, ThetaTrue, meanBThetaQN, sdBThetaQN, rmseBThetaQ
             "Param": param, # lista tipo ["b0", "b1", "b2", "gamma"]
             "True": ThetaTrue, #stessa lunghezza di parametri
             "Mean": meanBThetaQN,
-            "SD": sdBThetaQN,
+            "SE": seBThetaQN,
             "RMSE": rmseBThetaQN
         }
     )
@@ -654,7 +654,7 @@ def CompleteOneProcess(pdf, specif, seed, alpha, bounds, nr_candid, nr_pass_chec
     # 2 - Ottenere per B volte la stima dei parametri tramite ParamEstimation
     # ( B vettori di parametri theta)
     print(f"{specif} - {pdf} - SIMULAZIONE 0")
-    thetaQN = ParamEstimation(nr_candid=nr_candid, nr_pass_check=nr_pass_check, specif=specif, pdf=pdf, Y_t=Y_t, alpha=ALPHA, seed=seed, bounds=bounds)
+    thetaQN = ParamEstimation(nr_candid=nr_candid, nr_pass_check=nr_pass_check, specif=specif, pdf=pdf, Y_t=Y_t, alpha=alpha, seed=seed, bounds=bounds)
     n_param = len(thetaQN)
 
     BThetaQN = np.zeros((B, n_param))
@@ -662,16 +662,16 @@ def CompleteOneProcess(pdf, specif, seed, alpha, bounds, nr_candid, nr_pass_chec
 
     for i in range(1, B):
         print(f"{specif} - {pdf} - SIMULAZIONE {i}")
-        BThetaQN[i, :] = ParamEstimation(nr_candid=nr_candid, nr_pass_check=nr_pass_check, specif=specif, pdf=pdf, Y_t=Y_t, alpha=ALPHA, seed=seed, bounds=bounds)
+        BThetaQN[i, :] = ParamEstimation(nr_candid=nr_candid, nr_pass_check=nr_pass_check, specif=specif, pdf=pdf, Y_t=Y_t, alpha=alpha, seed=seed, bounds=bounds)
 
     print(BThetaQN)
 
     # 3 - Media, Deviazione Standard, RMSE rispetto a ThetaTrue + Costruzione tabella
     ThetaTrue, Unif = ChooseSpecificPar(pdf=pdf, specif=specif, alpha=alpha, seed=seed) # il seed non sarà utilizzato
 
-    param, meanBThetaQN, sdBThetaQN, rmseBThetaQN = ChooseSpecificTab(specif=specif, ThetaTrue=ThetaTrue, BThetaQN=BThetaQN)
+    param, meanBThetaQN, seBThetaQN, rmseBThetaQN = ChooseSpecificTab(specif=specif, ThetaTrue=ThetaTrue, BThetaQN=BThetaQN)
 
-    df = BuildDataFrame(pdf=pdf, specif=specif, ThetaTrue=ThetaTrue, meanBThetaQN=meanBThetaQN, sdBThetaQN=sdBThetaQN, rmseBThetaQN=rmseBThetaQN, param=param)
+    df = BuildDataFrame(pdf=pdf, specif=specif, ThetaTrue=ThetaTrue, meanBThetaQN=meanBThetaQN, seBThetaQN=seBThetaQN, rmseBThetaQN=rmseBThetaQN, param=param)
 
     print(f"ThetaMean: {meanBThetaQN}")
 
@@ -735,7 +735,7 @@ latex_table = DF.to_latex(
     label="tab:paramest"
 )
 
-with open("ParamEstimation0208.tex", "w") as f:
+with open("ParamEstimation.tex", "w") as f:
     f.write(latex_table)
 
 
