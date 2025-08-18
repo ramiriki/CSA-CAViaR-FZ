@@ -48,5 +48,5 @@ for i, currency in enumerate(Currencies):
         ax.tick_params(axis='y', labelrotation=0, labelsize=6)
 
 plt.tight_layout()
-plt.savefig("ExchangeRatesReturn.png", dpi=300, bbox_inches='tight')
+plt.savefig("ERReturn.png", dpi=300, bbox_inches='tight')
 plt.show()

@@ -64,17 +64,16 @@ def CrossAutocorrLag1(y1, y2):
 
 # caricamento dati
 df = pd.read_csv(
-    "ExchangeRates.csv",
+    "StockIndices.csv",
     index_col=0,
     parse_dates=True
 )
 
-Currencies = ["USD/CNY", "EUR/CNY", "100JPY/CNY", "HKD/CNY"]
+Indices = ["Returns_FTSE 100", "Returns_HSI", "Returns_Nikkei 225", "Returns_S&P 500"]
 
 # statistiche di una valuta
-def StatsForCurrency(currency):
-    P_t = df[currency].dropna()
-    y_t = 100 * np.diff(np.log(P_t))
+def StatsForCurrency(indice):
+    y_t = df[indice].dropna()
     y_t_abs = np.abs(y_t)
     y_t_diff1 = np.diff(y_t_abs)
     y_t_diff05 = fractional_diff(y=y_t_abs, d=0.5)
@@ -105,7 +104,9 @@ def StatsForCurrency(currency):
     return curr_val
 
 # Costruzione tabella con tutte le statistiche
-StatsMatrix = [StatsForCurrency(curr) for curr in Currencies]
+StatsMatrix = [StatsForCurrency(ind) for ind in Indices]
+
+indice = [ind.split("Returns_")[1] for ind in Indices]
 
 # Converti in DataFrame
 AllStats = pd.DataFrame(
@@ -115,7 +116,7 @@ AllStats = pd.DataFrame(
            "LB1", "LB2", "LB3", "LB4",
            "HE1", "HE2", "HE3", "HE4",
            "CA1", "CA2", "CA3", "CA4"],
-    columns=Currencies
+    columns=indice
 )
 
 
@@ -144,19 +145,20 @@ latex_index = {
 
 AllStats.index = [latex_index[i] for i in AllStats.index]
 
-AllStats.columns = [r"\textbf{USD/CNY}", r"\textbf{EUR/CNY}", r"\textbf{100JPY/CNY}", r"\textbf{HKD/CNY}"]
+AllStats.columns = [r"\textbf{FTSE 100}", r"\textbf{HSI}", r"\textbf{Nikkei 225}", r"\textbf{S\&P 500}"]
+
 
 AllStatsLatex = AllStats.to_latex(
     escape=False,
     column_format="lcccc",
     float_format="%.3f",
     longtable=True,
-    caption=r"Statistiche descrittive delle serie dei rendimenti $y_t$",
-    label="tab:descriptivestats"
+    caption=r"Statistiche descrittive delle serie dei rendimenti degli indici azionari $y_t$",
+    label="tab:SIdescriptivestats"
 )
 
 
-with open("DescriptiveStats.tex", "w") as f:
+with open("SIDescriptiveStats.tex", "w") as f:
     f.write(AllStatsLatex)
 
 print("done")

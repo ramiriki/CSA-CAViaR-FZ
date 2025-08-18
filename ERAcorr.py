@@ -46,5 +46,5 @@ for i, currency in enumerate(Currencies):
     plot_acorr(ax=axs[i], currency=currency, ylim=(-0.1, 1), max_lag=50)
 
 # plt.tight_layout()
-plt.savefig("acorr_ER.png", dpi=300, bbox_inches='tight')
+plt.savefig("ERAcorr.png", dpi=300, bbox_inches='tight')
 plt.show()

@@ -35,5 +35,5 @@ for i, currency in enumerate(Currencies):
 
    
 plt.tight_layout()
-plt.savefig("ReturnHist.png", dpi=300, bbox_inches='tight')
+plt.savefig("ERHist.png", dpi=300, bbox_inches='tight')
 plt.show()
